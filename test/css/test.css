@@ -1,0 +1,50 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.form {
+    width: 380px;
+    padding: 25px;
+    margin: 60px auto 0 auto;
+    background-color: #efefef;
+}
+.form .input-group {
+    width: 100%;
+    height: 30px;
+    margin: 5px 0;
+    border: 1px #aaa solid;
+    clear: both;
+}
+.form .input-group label {
+    display: inline-block;
+    background-color: #aaa;
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    text-align: center;
+    float: left;
+}
+.form .input-group input {
+    display: inline-block;
+    padding-left: 5px;
+    width: calc(100% - 67px);
+    height: 30px;
+    border: none;
+    outline: none;
+    float: right;
+    color: #555;
+}
+.form button {
+    display: block;
+    width: 80px;
+    height: 35px;
+    margin: 0 auto;
+    border: none;
+    outline: none;
+    background-color: #333;
+    color: #fff;
+}
+.form button:hover {
+    background-color: #555;
+}

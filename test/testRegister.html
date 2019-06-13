@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+    <link rel="stylesheet" href="css/test.css">
+    <script src="../js/register.js"></script>
+</head>
+<body>
+<div class="form">
+    <div class="input-group">
+        <label for="input-one">one</label>
+        <input id="input-one" type="text">
+    </div>
+    <div class="input-group">
+        <label for="input-two">two</label>
+        <input id="input-two" type="text">
+    </div>
+    <div class="input-group">
+        <label for="input-three">three</label>
+        <input id="input-three" type="text">
+    </div>
+    <div class="input-group">
+        <label for="input-four">four</label>
+        <input id="input-four" type="text">
+    </div>
+    <button id="submit" type="button">Button</button>
+</div>
+</body>
+<script>
+    var $one = register.init('#input-one'),
+        $two = register.init('#input-two'),
+        $three = register.init('#input-three', function (value) {
+            if (value === 'success') {
+                $three.success('success');
+            }
+        }),
+        $four = register.init('#input-four', function (value) {
+            if (value === 'error') {
+                $four.error('error');
+            }
+        });
+</script>
+</html>
