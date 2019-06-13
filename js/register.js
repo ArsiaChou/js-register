@@ -9,19 +9,6 @@
         this.focus = null;
     };
 
-    //初始化
-    var initialization = function (input) {
-        var $span = document.createElement('span');
-        $span.style.display = 'block';
-        $span.style.width = '100%';
-        $span.style.height = '12px';
-        $span.style.lineHeight = '12px';
-        $span.style.fontSize = '12px';
-        $span.style.textAlign = 'left';
-        $span.style.paddingLeft = '5px';
-        input.parentElement.after($span);
-    };
-
     //输入框状态
     var inputType = {
         type: {
@@ -32,7 +19,7 @@
                 success: '1px #98FB98 solid'
             },
             boxShadow: {
-                normal: '0 0 2px #AAAAAA',
+                normal: 'none',
                 error: '0 0 2px #FF4040',
                 focus: '0 0 2px #555555',
                 success: '0 0 2px #98FB98'
@@ -66,13 +53,33 @@
                 $parent.nextElementSibling.style.color = '#98FB98';
             }
         }
+    },
+    spanStyle = {
+        display: 'inline-block',
+        width: '100%',
+        fontSize: '12px',
+        testAlign: 'left',
+        padding: '0 0 0 5px',
+        margin: '0 0 5px 0'
+    };
+
+    //初始化
+    var initialization = function (input) {
+        var $span = document.createElement('span');
+        $span.style.display = spanStyle.display;
+        $span.style.width = spanStyle.width;
+        $span.style.fontSize = spanStyle.fontSize;
+        $span.style.textAlign = spanStyle.testAlign;
+        $span.style.padding = spanStyle.padding;
+        $span.style.margin = spanStyle.margin;
+        input.parentElement.after($span);
     };
 
     //聚焦、失焦
     win.register.init = function (selector, check) {
         var input = document.querySelector(selector),
             value = '',
-        reply = new register();
+            reply = new register();
         //init
         reply.element = input;
 
@@ -114,7 +121,20 @@
             inputType.method.success(reply.element, words);
         };
 
+        reply.val = function() {
+          if (arguments.length === 0) {
+              return reply.element.value;
+          } else {
+              reply.element.value = arguments[0]
+          }
+        };
         initialization(reply.element);
         return reply;
+    };
+
+    //默认值
+    win.register.style = {
+        input: inputType.type,
+        span: spanStyle
     }
 })(window);
