@@ -8,16 +8,29 @@
 *   selector 可为 '#id', '.class', 'tag'
 *   check(value)为验证格式的函数，value 为输入框的值
 **/
-var $input = register.init('#input', (value) => {});
+var $input = register.init('#input', (value) => {...});
 ```
 ### 状态切换
 ```javascript
-var $input = register.init('#input', function(value) {});
 //输入框状态
 $input.normal() //正常状态
 $input.focus() //聚焦状态
 $input.error(words) //警告状态
 $input.success(words) //正确状态
+```
+
+### 获取和修改输入框的值
+```javascript
+//获取值
+$input.val();
+//修改值
+$input.val(...);
+```
+
+### 获取dom对象，进行其他操作
+```javascript
+var input = $input.element;
+var input = $($input.element);
 ```
 
 ### 默认值修改
