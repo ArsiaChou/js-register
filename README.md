@@ -1,5 +1,15 @@
 # js-register
 
+### 支持的排版
+```html
+<div class="input-group">
+    <label for="text">text</label>
+    <input id="text" type="text">
+</div>
+<!-- 每个input外都需要一个父元素包裹 -->
+<!-- 暂时支持且仅支持这种格式-->
+```
+
 ### 使用方法
 ```javascript
 //初始化
