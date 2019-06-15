@@ -28,6 +28,8 @@
     var $one = register.init('#input-one', function (v) {
         if (v == 'error') {
             $one.error();
+        } else {
+            $one.focus();
         }
     });
 </script>

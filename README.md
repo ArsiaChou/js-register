@@ -40,8 +40,6 @@ $input.val(...);
 ### 获取dom对象，进行其他操作
 ```javascript
 var input = $input.element;
-//OR
-var input = $($input.element);
 ```
 
 ### 默认值修改
@@ -74,4 +72,13 @@ win.register.style = {
     };
 //初始化
 var $input = register.init('#input', (value) => { });
+```
+
+### 响应方式选择
+```javascript
+//  1.共两种响应模式，'keyup' 以及 'blur'
+//  2.默认模式为'keyup'
+//  3.若mode不为这两个选项中的任意一个，则mode为'keyup'
+//  4.若要改模式，必须在初始化之前改变
+register.setMode(mode);
 ```

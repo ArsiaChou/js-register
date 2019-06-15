@@ -1,6 +1,13 @@
 (function (win) {
     //调用接口
     win.register = {};
+    //默认响应方式
+    var mode_ = 'keyup';
+    register.setMode = function (mode) {
+        if (mode === 'keyup' || mode === 'blur') {
+            mode_ = mode;
+        }
+    };
     //返回对象
     var Reply = function () {
         //this处理
@@ -107,6 +114,43 @@
         $span.style.margin = win.register.style.span.margin;
         reply.element.parentElement.after($span);
     };
+    //初始化响应方式
+    var modeInit = function(reply, check) {
+        //初始化输入框聚焦、失焦事件
+        reply.element.onfocus = function () {
+            var value = reply.val();
+            if (value === '') {
+                reply.focus();
+            } else if (typeof check === 'function') {
+                check(value);
+            } else {
+                reply.focus();
+            }
+        };
+        reply.element.onblur = function () {
+            var value = reply.val();
+            if (value === '') {
+                reply.normal();
+            } else if (typeof check === 'function') {
+                check(value);
+            } else {
+                reply.normal();
+            }
+        };
+
+        if (mode_ === 'keyup') {
+            reply.element.onkeyup = function () {
+                var value = reply.val();
+                if (value === '') {
+                    reply.focus();
+                } else if (typeof check === 'function') {
+                    check(value);
+                } else {
+                    reply.focus();
+                }
+            }
+        }
+    };
     //初始化
     win.register.init = function (selector, check) {
         var reply = new Reply();
@@ -129,27 +173,7 @@
             words = typeof words === 'undefined' ? '' : words;
             inputOperation.success(reply, words);
         };
-        //初始化输入框聚焦、失焦事件
-        reply.element.onfocus = function () {
-            var value = reply.val();
-            if (value === '') {
-                reply.focus();
-            } else if (typeof check === 'function') {
-                check(value);
-            } else {
-                reply.focus();
-            }
-        };
-        reply.element.onblur = function () {
-            var value = reply.val();
-            if (value === '') {
-                reply.normal();
-            } else if (typeof check === 'function') {
-                check(value);
-            } else {
-                reply.normal();
-            }
-        };
+        modeInit(reply, check);
         //返回输入框操作对象
         return reply;
     }
