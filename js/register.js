@@ -1,140 +1,156 @@
 (function (win) {
-    //init
+    //调用接口
     win.register = {};
-    var register = function () {
+    //返回对象
+    var Reply = function () {
+        //this处理
+        var that = this;
+        //dom对象
         this.element = null;
-        this.error = null;
+        //输入框验证结果
+        this.correct = null;
+        //输入框状态
         this.normal = null;
-        this.success = null;
         this.focus = null;
-    };
-
-    //输入框状态
-    var inputType = {
-        type: {
-            border: {
-                normal: '1px #AAAAAA solid',
-                error: '1px #FF4040 solid',
-                focus: '1px #555555 solid',
-                success: '1px #98FB98 solid'
-            },
-            boxShadow: {
-                normal: 'none',
-                error: '0 0 2px #FF4040',
-                focus: '0 0 2px #555555',
-                success: '0 0 2px #98FB98'
-            }
-        },
-        method: {
-            normal: function (input) {
-                var $parent = input.parentElement;
-                $parent.nextElementSibling.innerHTML = '';
-                $parent.style.border = inputType.type.border.normal;
-                $parent.style.boxShadow = inputType.type.boxShadow.normal;
-            },
-            error: function (input, words) {
-                var $parent = input.parentElement;
-                $parent.nextElementSibling.innerHTML = words;
-                $parent.style.border = inputType.type.border.error;
-                $parent.style.boxShadow = inputType.type.boxShadow.error;
-                $parent.nextElementSibling.style.color = '#FF4040';
-            },
-            focus: function (input) {
-                var $parent = input.parentElement;
-                $parent.style.border = inputType.type.border.focus;
-                $parent.style.boxShadow = inputType.type.boxShadow.focus;
-            },
-            success: function (input, words) {
-                var $parent = input.parentElement;
-                if (words == null || words == undefined) words = '';
-                $parent.nextElementSibling.innerHTML = words;
-                $parent.style.border = inputType.type.border.success;
-                $parent.style.boxShadow = inputType.type.boxShadow.success;
-                $parent.nextElementSibling.style.color = '#98FB98';
+        this.error = null;
+        this.success = null;
+        //获取输入框的值
+        this.val = function () {
+            if (arguments.length === 0) {
+                return that.element.value;
+            } else {
+                that.element.value = arguments[0];
             }
         }
-    },
-    spanStyle = {
-        display: 'inline-block',
-        width: '100%',
-        fontSize: '12px',
-        testAlign: 'left',
-        padding: '0 0 0 5px',
-        margin: '0 0 5px 0'
     };
-
-    //初始化
-    var initialization = function (input) {
-        var $span = document.createElement('span');
-        $span.style.display = spanStyle.display;
-        $span.style.width = spanStyle.width;
-        $span.style.fontSize = spanStyle.fontSize;
-        $span.style.textAlign = spanStyle.testAlign;
-        $span.style.padding = spanStyle.padding;
-        $span.style.margin = spanStyle.margin;
-        input.parentElement.after($span);
-    };
-
-    //聚焦、失焦
-    win.register.init = function (selector, check) {
-        var input = document.querySelector(selector),
-            value = '',
-            reply = new register();
-        //init
-        reply.element = input;
-
-        input.addEventListener('focus', function () {
-            value = input.value.trim();
-            if (value === '') {
-                inputType.method.focus(input);
-            } else if (typeof check === 'function') {
-                check(value);
-            } else {
-                inputType.method.focus(input);
-            }
-        });
-
-        input.addEventListener('blur', function () {
-            value = input.value.trim();
-            if (value === '') {
-                inputType.method.normal(input);
-            } else if (typeof check === 'function') {
-                check(value);
-            } else {
-                inputType.method.normal(input);
-            }
-        });
-
-        reply.error = function (words) {
-            inputType.method.error(reply.element, words);
-        };
-
-        reply.normal = function () {
-            inputType.method.normal(reply.element);
-        };
-
-        reply.focus = function () {
-            inputType.method.focus(reply.element);
-        };
-
-        reply.success = function (words) {
-            inputType.method.success(reply.element, words);
-        };
-
-        reply.val = function() {
-          if (arguments.length === 0) {
-              return reply.element.value;
-          } else {
-              reply.element.value = arguments[0]
-          }
-        };
-        initialization(reply.element);
-        return reply;
-    };
-
-    //默认值
+    //样式
     win.register.style = {
-        input: inputType.type,
-        span: spanStyle
+        color: {
+            normal: '#AAAAAA',
+            error: '#FF4040',
+            focus: '#555555',
+            success: '#98FB98'
+        },
+        border: {
+            width: '1px',
+            type: 'solid'
+        },
+        boxShadow: {
+            x: '0',
+            y: '0',
+            width: '2px'
+        },
+        span: {
+            display: 'inline-block',
+            width: '100%',
+            fontSize: '12px',
+            testAlign: 'left',
+            padding: '0 0 0 5px',
+            margin: '0 0 5px 0'
+        }
+    };
+    //input操作
+    var inputOperation = {
+        normal: function (reply) {
+            /*
+            *   回归普通状态
+            *   此时输入框一定为空，所以结果应为 false
+            * */
+            reply.correct = false;
+            //回归普通状态只需操作输入框父元素
+            var input = reply.element.parentElement;
+            input.style.border = win.register.style.border.width + ' ' + win.register.style.color.normal + ' ' + win.register.style.border.type;
+        },
+        focus: function (reply) {
+            /*
+            *   回归聚焦状态
+            *   回归前输入框一定为空，所以结果应为 false
+            * */
+            reply.correct = false;
+            //回归聚焦状态只需操作输入框父元素
+            var input = reply.element.parentElement;
+            input.style.border = win.register.style.border.width + ' ' + win.register.style.color.focus + ' ' + win.register.style.border.type;
+        },
+        error: function (reply, words) {
+            /*
+           *   回归错误状态
+           *   结果为 false
+           * */
+            reply.correct = false;
+            //回归聚焦状态只需操作输入框父元素
+            var input = reply.element.parentElement;
+            input.style.border = win.register.style.border.width + ' ' + win.register.style.color.error + ' ' + win.register.style.border.type;
+            input.nextElementSibling.innerHTML = words;
+            input.nextElementSibling.style.color = win.register.style.color.error;
+        },
+        success: function (reply, words) {
+            /*
+           *   回归正确状态
+           *   结果为 true
+           * */
+            reply.correct = true;
+            //回归聚焦状态只需操作输入框父元素
+            var input = reply.element.parentElement;
+            input.style.border = win.register.style.border.width + ' ' + win.register.style.color.success + ' ' + win.register.style.border.type;
+            input.nextElementSibling.innerHTML = words;
+            input.nextElementSibling.style.color = win.register.style.color.success;
+        }
+    };
+    //添加span
+    var spanInit = function(reply) {
+        var $span = document.createElement('span');
+        $span.style.display = win.register.style.span.display;
+        $span.style.width = win.register.style.span.width;
+        $span.style.fontSize = win.register.style.span.fontSize;
+        $span.style.textAlign = win.register.style.span.testAlign;
+        $span.style.padding = win.register.style.span.padding;
+        $span.style.margin = win.register.style.span.margin;
+        reply.element.parentElement.after($span);
+    };
+    //初始化
+    win.register.init = function (selector, check) {
+        var reply = new Reply();
+        //获取dom
+        reply.element = document.querySelector(selector);
+        //添加显示信息的span
+        spanInit(reply);
+        //初始化状态函数
+        reply.normal = function () {
+            inputOperation.normal(reply);
+        };
+        reply.focus = function () {
+            inputOperation.focus(reply);
+        };
+        reply.error = function (words) {
+            words = typeof words === 'undefined' ? '' : words;
+            inputOperation.error(reply, words);
+        };
+        reply.success = function (words) {
+            words = typeof words === 'undefined' ? '' : words;
+            inputOperation.success(reply, words);
+        };
+        //初始化输入框聚焦、失焦事件
+        reply.element.onfocus = function () {
+            var value = reply.val();
+            if (value === '') {
+                reply.focus();
+            } else if (typeof check === 'function') {
+                check(value);
+            } else {
+                reply.focus();
+            }
+        };
+        reply.element.onblur = function () {
+            var value = reply.val();
+            if (value === '') {
+                reply.normal();
+            } else if (typeof check === 'function') {
+                check(value);
+            } else {
+                reply.normal();
+            }
+        };
+        //返回输入框操作对象
+        return reply;
     }
 })(window);

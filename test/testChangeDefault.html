@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>change default</title>
+    <link rel="stylesheet" href="css/test.css">
+    <script src="../js/register.js"></script>
+</head>
+<body>
+<div class="form">
+    <div class="input-group">
+        <label for="input-one">one</label>
+        <input id="input-one" type="text">
+    </div>
+    <div class="input-group">
+        <label for="input-two">two</label>
+        <input id="input-two" type="text">
+    </div>
+    <div class="input-group">
+        <label for="input-three">three</label>
+        <input id="input-three" type="text">
+    </div>
+    <button id="submit" type="button">Button</button>
+</div>
+</body>
+<script>
+    register.style.color.error = 'green';
+    var $one = register.init('#input-one', function (v) {
+        if (v == 'error') {
+            $one.error();
+        }
+    });
+</script>
+</html>
